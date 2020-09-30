@@ -23,7 +23,7 @@ class App extends React.Component {
 
         document.execCommand("copy");
 
-        T.notify('Copied', 'Success');
+        T.notify('Copied', 'success');
     }
 
     selectAll() {
