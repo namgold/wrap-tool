@@ -4,33 +4,38 @@ import T from '../js/common';
 const $ = window.$;
 
 class App extends React.Component {
+    constructor() {
+        super();
+        this.max = 200;
+        this.min = 1;
+    }
 
-    convert(e) {
+    convert = e => {
         const input = $('#input').val();
         if (!input) return;
         let width = $('#width').val();
         if (isNaN(width)) return;
         width = Number(width);
+        if (width < this.min || width > this.max) return;
         const output = input.split('\n').map(i => i.slice(1)).join('').match(new RegExp('.{1,'+width+'}', 'g')).map(i => ' ' + i).join('\n');
         $('#output').val(output);
     }
 
     copy() {
         var copyText = document.getElementById("output");
-
         copyText.select();
-        copyText.setSelectionRange(0, 99999999);
+        copyText.setSelectionRange(0, 999999999999999);
 
         document.execCommand("copy");
+        copyText.setSelectionRange(0, 0);
 
         T.notify('Copied', 'success');
     }
 
     selectAll() {
         var copyText = document.getElementById("output");
-
         copyText.select();
-        copyText.setSelectionRange(0, 99999999);
+        copyText.setSelectionRange(0, 999999999999999);
     }
 
     render() {
@@ -44,7 +49,7 @@ class App extends React.Component {
                                     <label htmlFor='input'>Input</label>
                                     <label>
                                     Width:&nbsp;
-                                        <input id='width' type='Number' defaultValue={70} max={200} min={1}/>
+                                        <input id='width' type='Number' defaultValue={70} max={this.max} min={this.min}/>
                                     </label>
                                 </div>
                                 <textarea id='input'/>
