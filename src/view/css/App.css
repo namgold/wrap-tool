@@ -36,3 +36,44 @@
         transform: rotate(360deg);
     }
 }
+
+.convert-container {
+    padding: 10px;
+    display:flex;
+    align-items:center; /* vertically aligned! */
+    justify-content: center;
+  }
+
+.convert-button {
+    
+}
+
+.ta {
+    font-size: 1rem;
+}
+
+.ta > textarea {
+    width: 100%;
+    height: 90%;
+}
+
+.ta > div {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ta > div > label:first-child {
+    font-size: 2rem;
+    color: lime;
+}
+
+.ta > div > label:not(:first-child) {
+    font-size: 1.5rem;
+    color: lime;
+}
+
+.ta > div > label:not(:first-child) > input {
+    width: 100px;
+}
