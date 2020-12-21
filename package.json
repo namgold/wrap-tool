@@ -24,6 +24,9 @@
         ]
     },
     "dependencies": {
+        "serve": "^11.3.2"
+    },
+    "devDependencies": {
         "@babel/core": "7.9.0",
         "@svgr/webpack": "4.3.3",
         "@testing-library/jest-dom": "^4.2.4",
@@ -42,6 +45,8 @@
         "css-loader": "3.4.2",
         "dateformat": "^3.0.3",
         "debug": "~2.6.9",
+        "dotenv": "^8.2.0",
+        "dotenv-expand": "^5.1.0",
         "eslint": "^6.6.0",
         "eslint-config-react-app": "^5.2.1",
         "eslint-loader": "3.0.3",
@@ -140,8 +145,5 @@
         "presets": [
             "react-app"
         ]
-    },
-    "devDependencies": {
-        "serve": "^11.3.2"
     }
 }
