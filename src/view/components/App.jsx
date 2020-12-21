@@ -3,26 +3,32 @@ import '../css/App.css';
 import T from '../js/common';
 const $ = window.$;
 
-class App extends React.Component {
-    constructor() {
-        super();
-        this.max = 200;
-        this.min = 1;
+function remove_duplicates_safe(arr) {
+    var seen = {};
+    var ret_arr = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (!(arr[i] in seen)) {
+            ret_arr.push(arr[i]);
+            seen[arr[i]] = true;
+        }
     }
+    return ret_arr;
+}
 
+class App extends React.Component {
     convert = e => {
-        const input = $('#input').val();
+        let input = $('#input').val();
         if (!input) return;
-        let width = $('#width').val();
-        if (isNaN(width)) return;
-        width = Number(width);
-        if (width < this.min || width > this.max) return;
-        const output = input.split('\n').map(i => i.slice(1)).join('').match(new RegExp('.{1,'+width+'}', 'g')).map(i => ' ' + i).join('\n');
+        if (input.slice(0, 16) !== 'Import-Package: ') return;
+        input = input.slice(15);
+        const width = 70;
+        const output = ('mport-Package: ' + remove_duplicates_safe(input.split('\n').map(i => i.slice(1)).join('').split(','))).match(new RegExp('.{1,'+(width-1)+'}', 'g')).map((i,index) => (index > 0 ? ' ' : 'I') + i).join('\n');
         $('#output').val(output);
     }
 
     copy() {
         var copyText = document.getElementById("output");
+        if (!copyText || !copyText.value) return;
         copyText.select();
         copyText.setSelectionRange(0, 999999999999999);
 
@@ -32,27 +38,20 @@ class App extends React.Component {
         T.notify('Copied', 'success');
     }
 
-    selectAll() {
-        var copyText = document.getElementById("output");
-        copyText.select();
-        copyText.setSelectionRange(0, 999999999999999);
-    }
-
     render() {
         return (
             <div className="App">
                 <header className="App-header">
-                    <h1>Wrap text tool</h1>
-                    <div className='row' style={{ height: '500px', width: '1800px' }}>
+                    <h1>SUBSYSTEM.MF tool</h1>
+                    <div className='row' style={{ height: '500px', width: '1400px' }}>
                             <div className='ta input col-5'>
                                 <div>
                                     <label htmlFor='input'>Input</label>
-                                    <label>
-                                    Width:&nbsp;
-                                        <input id='width' type='Number' defaultValue={70} max={this.max} min={this.min}/>
-                                    </label>
+                                    <div>
+                                        <button className='btn btn-info' onClick={this.copy}><i className="fas fa-upload"/> Upload</button>
+                                    </div>
                                 </div>
-                                <textarea id='input'/>
+                                <textarea id='input' placeholder='Import-Package: ...'/>
                             </div>
                         <div className='convert-container col-2'>
                             <button className='btn btn-success convert-button' onClick={this.convert}>Convert</button>
@@ -61,7 +60,6 @@ class App extends React.Component {
                             <div>
                                 <label htmlFor='output'>Output</label>
                                 <div>
-                                    <button className='btn btn-warning' onClick={this.selectAll}>Select all</button>
                                     <button className='btn btn-success' onClick={this.copy}>Copy</button>
                                 </div>
                             </div>
