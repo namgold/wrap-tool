@@ -76,6 +76,8 @@ class App extends React.Component {
                             <textarea id='output' readOnly={true}/>
                         </div>
                     </div>
+                    <h6 className='mt-4'>Author: <a href='https://github.com/namgold'>Dominik Nam Nguyen</a></h6>
+                    <h6 className=''>Source code: <a href='https://github.com/namgold/wrap-tool'>https://github.com/namgold/wrap-tool</a></h6>
                 </header>
             </div>
         );
