@@ -4,8 +4,7 @@
     "private": true,
     "main": "src/bin/www",
     "scripts": {
-        "start": "serve -s build -l 443",
-        "webpack": "node scripts/start.js",
+        "dev": "node scripts/start.js",
         "build": "node scripts/build.js"
     },
     "eslintConfig": {
