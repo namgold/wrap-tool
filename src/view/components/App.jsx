@@ -17,25 +17,35 @@ function remove_duplicates_safe(arr) {
 
 class App extends React.Component {
     convert = e => {
-        let input = $('#input').val();
-        if (!input) return;
-        if (input.slice(0, 16) !== 'Import-Package: ') return;
-        input = input.slice(15);
-        const width = 70;
-        const output = ('mport-Package: ' + remove_duplicates_safe(input.split('\n').map(i => i.slice(1)).join('').split(','))).match(new RegExp('.{1,'+(width-1)+'}', 'g')).map((i,index) => (index > 0 ? ' ' : 'I') + i).join('\n');
-        $('#output').val(output);
+        try {
+            let input = $('#input').val();
+            if (!input) throw new Error('Empty input');
+            if (input.slice(0, 16) !== 'Import-Package: ') throw new Error('Invalid input format');
+            input = input.slice(15);
+            const width = 70;
+            const output = ('mport-Package: ' + remove_duplicates_safe(input.split('\n').map(i => i.slice(1)).join('').split(','))).match(new RegExp('.{1,'+(width-1)+'}', 'g')).map((i,index) => (index > 0 ? ' ' : 'I') + i).join('\n');
+            $('#output').val(output);
+            T.notify('Convert successfully', T.NOTIFY_TYPE.SUCCESS);
+        } catch (e) {
+            T.notify(e.message, T.NOTIFY_TYPE.DANGER);
+        }
     }
 
     copy() {
-        var copyText = document.getElementById("output");
-        if (!copyText || !copyText.value) return;
-        copyText.select();
-        copyText.setSelectionRange(0, 999999999999999);
+        try {
 
-        document.execCommand("copy");
-        copyText.setSelectionRange(0, 0);
+            var copyText = document.getElementById("output");
+            if (!copyText || !copyText.value) throw new Error('Nothing to copy');
+            copyText.select();
+            copyText.setSelectionRange(0, 999999999999999);
 
-        T.notify('Copied', 'success');
+            document.execCommand("copy");
+            copyText.setSelectionRange(0, 0);
+
+            T.notify('Copied', T.NOTIFY_TYPE.SUCCESS);
+        } catch (e) {
+            T.notify(e.message, T.NOTIFY_TYPE.DANGER);
+        }
     }
 
     render() {
@@ -48,7 +58,7 @@ class App extends React.Component {
                                 <div>
                                     <label htmlFor='input'>Input</label>
                                     <div>
-                                        <button className='btn btn-info' onClick={this.copy}><i className="fas fa-upload"/> Upload</button>
+                                        {/* <button className='btn btn-info' onClick={this.copy}><i className="fas fa-upload"/> Upload</button> */}
                                     </div>
                                 </div>
                                 <textarea id='input' placeholder='Import-Package: ...'/>
